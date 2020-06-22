@@ -1,0 +1,35 @@
+1. Iniciamos el server
+    NodeJS
+    Express
+    Mongoose
+    Nodemmon
+2. Creamos las rutas en diferentes directorios
+    routes
+          app 
+          hospital
+          medico 
+          usuario
+3. Creamos los modulos con mongoose
+4. Instalamos body-parse
+5. Creamos:
+            Crea un nuevo hospital
+            Listar hospitales
+            Eliminar hospitales
+            Actulizar hospitales
+6. Creamos:
+            Crea un nuevo medico
+            Listar medico
+            Eliminar medico
+            Actualizar medico
+6. Instalamos bcryptjs para encriptar contraseña del usuario              
+7. Creamos:
+            Crea un nuevo usuario 
+            Listar usuario       
+8. Instalamos jsonwebtoken 
+9. Creamos:
+            Login
+10. Creamos Token
+
+     
+
+
