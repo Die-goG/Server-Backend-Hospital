@@ -31,6 +31,11 @@ var usuarioSchema = new Schema({
         type: String,
         require: true,
         default: 'USER_ROLE'
+    },
+    google: { //si es true significa que el usuario se creo por google, false significa que no puede autenticarse por google
+        //xq previamente ese email fue usado para autenticarse
+        type: Boolean,
+        default: false
     }
 
 }, { collection: 'Usuario' });
