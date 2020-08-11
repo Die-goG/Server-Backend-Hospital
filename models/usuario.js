@@ -16,8 +16,8 @@ var usuarioSchema = new Schema({
     },
     email: {
         type: String,
-        unique: true,
-        require: [true, 'El email es necesario']
+        unique: true, // debera haber solo un email regisstrado en el sistema
+        require: [true, 'El email es necesario'] //  el campo es requerido
     },
     password: {
         type: String,
@@ -39,6 +39,15 @@ var usuarioSchema = new Schema({
     }
 
 }, { collection: 'Usuario' });
+
+
+// visualizamos los datos de los usuarios la hacer get, excepto los que esta declarados en este metodo
+usuarioSchema.method('toJSON', function() {
+    const { __v, _id, password, ...object } = this.toObject();
+    object.uid = _id;
+    return object;
+});
+
 
 usuarioSchema.plugin(uniqueValidator, { messsage: '{PATH} debe ser unico' });
 module.exports = mongoose.model('Usuario', usuarioSchema);
