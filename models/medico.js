@@ -1,6 +1,5 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var medicoSchema = new Schema({
+const { Schema, model } = require('mongoose');
+const medicoSchema = new Schema({
     nombre: {
         type: String,
         required: [true, 'El nombre es necesario']
@@ -19,5 +18,9 @@ var medicoSchema = new Schema({
         ref: 'Hospital',
         required: [true, 'El id hospital es un campo obligatorio ']
     }
-});
-module.exports = mongoose.model('Medico', medicoSchema);
+}, { collection: 'Medicos' });
+
+// ================================================
+//  EXPORTAMOS
+// ================================================
+module.exports = model('Medico', medicoSchema);

@@ -1,18 +1,30 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const { Schema, model } = require('mongoose');
 
-var hospitalSchema = new Schema({
+const hospitalSchema = new Schema({
     nombre: {
         type: String,
-        required: [true, 'El nombre es necesario']
+        require: [true, 'El usuario es necesario']
     },
     img: {
         type: String,
-        required: false
+        require: false
     },
     usuario: {
+        require: true, // ningun hospital se va a guaradar si no tiene uid del usuarios que los esta guardandp 
         type: Schema.Types.ObjectId,
-        ref: 'Usuario'
+        ref: 'Usuario' // Usuario hace referencia a export en  models/usuario.js 
     }
-}, { collection: 'hospitales' });
-module.exports = mongoose.model('Hospital', hospitalSchema);
+}, { collection: 'Hospitales' }); // el nombre que irian en la coleccion en MongoDB
+
+
+// visualizamos los datos de los usuarios la hacer get, excepto los que esta declarados en este metodo
+hospitalSchema.method('toJSON', function() {
+    const { __v, ...object } = this.toObject();
+    return object;
+});
+
+
+// ================================================
+//  EXPORTAMOS
+// ================================================
+module.exports = model('Hospital', hospitalSchema);

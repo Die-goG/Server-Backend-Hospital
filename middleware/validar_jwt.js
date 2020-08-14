@@ -4,7 +4,7 @@ const validarJWT = (req, res, next) => {
     //Leer el token de los headers, para probar debemos especificar Headers en el POSTMAN
     const token = req.header('x-token');
 
-    console.log(token);
+    //console.log(token);  ///motramos el token en la consola
 
     if (!token) {
         return res.status(401).json({

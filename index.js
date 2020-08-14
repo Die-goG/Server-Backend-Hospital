@@ -39,7 +39,7 @@ app.use(bodyParser.json());
 //*********************
 // Importamos las rutas
 //*********************
-var appRoutes = require('./routes/app');
+//var appRoutes = require('./routes/app');
 var hospitalRoutes = require('./routes/hospital');
 var medicoRoutes = require('./routes/medico');
 var usuarioRoutes = require('./routes/usuario');
@@ -56,10 +56,10 @@ app.use('/login', loginRoutes);
 app.use('/usuario', usuarioRoutes);
 app.use('/hospital', hospitalRoutes);
 app.use('/medico', medicoRoutes);
-app.use('/busqueda', busquedaRoutes);
+app.use('/todo', busquedaRoutes);
 app.use('/upload', uploadRoutes);
 app.use('/img', imagenesRoutes);
-app.use('/', appRoutes);
+//app.use('/', appRoutes);
 
 
 

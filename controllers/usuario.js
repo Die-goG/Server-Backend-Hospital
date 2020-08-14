@@ -13,13 +13,21 @@ const usuario = require('../models/usuario');
 // ================================================
 const getUsuario = async(req, res) => {
 
-    // const usuario = await Usuario.find({}, 'usuario email role google'); //visualizamos campos especificos
-    const usuario = await Usuario.find(); // visualizamos todos los campos
+    const desde = Number(req.query.desde) || 0; // si no viene el valos desde, colocamos 0
+
+    const [usuario, total] = await Promise.all([
+        Usuario
+        .find({}, 'usuario email role google img')
+        .skip(desde)
+        .limit(5),
+        Usuario.countDocuments()
+    ]);
 
     res.json({
         ok: true,
         usuario,
-        uid: req.uid // tomamos el uid del usuario que hizo la peticion, este uid fue envido desde validar_jwt.js (linea:22)
+        uid: req.uid, // tomamos el uid del usuario que hizo la peticion, este uid fue envido desde validar_jwt.js (linea:22)
+        total //total de regitros en la base de datos
     });
 };
 
@@ -124,7 +132,7 @@ const postUsuario = async(req, res) => {
 //  DELETE : Eliminar Usuario
 // ================================================
 
-const eliminarUsuario = async(req, res) => {
+const deleteUsuario = async(req, res) => {
 
     const uid = req.params.id;
 
@@ -150,10 +158,12 @@ const eliminarUsuario = async(req, res) => {
         console.log(error);
         res.status(500).json({
             ok: false,
-            msg: 'Error inesperado en eliminarUsuario'
+            msg: 'Error inesperado en deleteUsuario'
         });
     }
 };
 
-//exportamos la funcion
-module.exports = { getUsuario, postUsuario, putUsuario, eliminarUsuario };
+// ================================================
+//  EXPORTAMOS
+// ================================================
+module.exports = { getUsuario, postUsuario, putUsuario, deleteUsuario };
