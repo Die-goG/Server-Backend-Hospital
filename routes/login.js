@@ -3,10 +3,14 @@
 // ================================================
 
 const { Router } = require('express');
-const { login } = require('../controllers/login');
+const { login, googleSignIn } = require('../controllers/login');
 const { validarCampos } = require('../middleware/validar_campos'); // importamos  middleware/validarCampos.js 
 const { check } = require('express-validator');
 const router = Router();
+
+// ================================================
+//  POST : Login
+// ================================================
 
 router.post('/', [
 
@@ -16,6 +20,16 @@ router.post('/', [
 
 ], login);
 
+// ================================================
+//  POST : Login Google
+// ================================================
+
+router.post('/google', [
+
+    check('token', 'El token de Google es obligatorio').not().isEmpty(),
+    validarCampos,
+
+], googleSignIn);
 
 // ================================================
 //  EXPORTAMOS
