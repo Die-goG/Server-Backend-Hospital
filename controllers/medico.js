@@ -19,12 +19,45 @@ const getMedico = async(req, res = response) => {
 // ================================================
 //  PUT : Actualizar Medico
 // ================================================
-const putMedico = (req, res) => {
+const putMedico = async(req, res = response) => {
 
-    res.json({
-        ok: true,
-        msg: 'putMedico'
-    });
+    const medicoId = req.params.id;
+    const uid = req.uid;
+
+    try {
+
+        //Busco mdico
+        const medico = await Medico.findById(medicoId);
+
+        //Busco hospital
+        //const hospital =
+
+        if (!medico) {
+            return res.status(404).json({
+                ok: true,
+                msg: 'Medico no encontrado por ID'
+            });
+        }
+
+        const cambiosMedico = {
+            ...req.body,
+            usuario: uid
+        };
+
+        const medicoActualizado = await Medico.findByIdAndUpdate(medicoId, cambiosMedico, { new: true });
+
+        res.json({
+            ok: true,
+            medicoActualizado
+        });
+
+    } catch (error) {
+        res.json({
+            ok: false,
+            msg: 'Error inesperado en putMedico'
+        });
+
+    }
 
 };
 
@@ -66,12 +99,36 @@ const postMedico = async(req, res = response) => {
 // ================================================
 //  DELETE : Eliminar Medico
 // ================================================
-const deleteMedico = (req, res) => {
+const deleteMedico = async(req, res = response) => {
 
-    res.json({
-        ok: true,
-        msg: 'deleteMedico'
-    });
+    const medicoId = req.params.id;
+
+    try {
+
+        const medico = await Medico.findById(medicoId);
+
+        if (!medico) {
+            return res.status(404).json({
+                ok: true,
+                msg: 'Medico no encontrado por ID'
+            });
+        }
+
+        await Medico.findByIdAndDelete(medicoId);
+
+        res.json({
+            ok: true,
+            msg: 'Medico eliminado'
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            ok: true,
+            msg: 'Error inesperado deleteMedico'
+        });
+
+    }
 
 };
 

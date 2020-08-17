@@ -4,6 +4,7 @@ const { json } = require('body-parser');
 const bcrypt = require('bcryptjs');
 const { generarJWT } = require('../helpers/jwt');
 const { googleVerify } = require('../helpers/google-verify');
+const usuario = require('../models/usuario');
 
 // ================================================
 //  POST : Login
@@ -107,13 +108,30 @@ const googleSignIn = async(req, res = response) => {
             msg: 'Token Google incorrecto'
         });
     }
-
-
-
 };
+
+
+// ================================================
+//  GET : Login renew, generamos un nuevo token
+// ================================================
+
+const renewToken = async(req, res = response) => {
+
+    //tomamos el uid del usuario que viene en la request
+    const uid = req.uid;
+
+    //Generamos el token
+    const token = await generarJWT(uid); // el token se genera en base a uid del usuario
+
+    res.json({
+        oK: true,
+        token
+    });
+};
+
 
 
 // ================================================
 //  EXPORTAMOS
 // ================================================
-module.exports = { login, googleSignIn };
+module.exports = { login, googleSignIn, renewToken };

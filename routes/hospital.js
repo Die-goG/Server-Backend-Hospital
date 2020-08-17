@@ -13,13 +13,16 @@ const router = Router();
 //  GET : Listar hospitales
 // ================================================
 
-router.get('/', [], getHospital);
+router.get('/', getHospital);
 
 // ================================================
 //  PUT : Actualizar hospital
 // ================================================
 
-router.put('/:id', [], putHospital);
+router.put('/:id', [
+    validarJWT,
+    check('nombre', 'El nombre del hospital es necesario ..').not().isEmpty(),
+], putHospital);
 
 // ================================================
 //  POST : Crear Usuario
@@ -35,7 +38,7 @@ router.post('/', [
 //  DELETE : Elimina hospital
 // ================================================
 
-router.delete('/:id', [], deleteHospital);
+router.delete('/:id', validarJWT, deleteHospital);
 
 // ================================================
 //  EXPORTAMOS

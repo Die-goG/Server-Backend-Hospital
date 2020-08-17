@@ -22,12 +22,45 @@ const getHospital = async(req, res = response) => {
 // ================================================
 //  PUT : Actualizar Hospital
 // ================================================
-const putHospital = (req, res) => {
+const putHospital = async(req, res = response) => {
 
-    res.json({
-        ok: true,
-        msg: 'putHospital'
-    });
+    //Tomamos el id del hospital
+    const hospitalId = req.params.id; //id de hospital
+    const uid = req.uid; //id de usuario que hizo la ultima modificacion
+
+    try {
+
+        const hospital = await Hospital.findById(hospitalId);
+
+        if (!hospital) {
+            return res.status(400).json({
+                ok: true,
+                msg: 'Hospital no encontrado por ID'
+            });
+        }
+
+        //hospital.nombre = req.body.nombre; // es el nombre del hospital que viene en el body
+
+        //Aqui viene todo lo que mandan en el put
+        const cambiosHospital = {
+            ...req.body,
+            usuario: uid
+        };
+
+        //Actulizamos los datos en la base 
+        const hospitalActualizado = await Hospital.findByIdAndUpdate(hospitalId, cambiosHospital, { new: true }); //con new: true: regresamo el ultimo
+
+        res.json({
+            ok: true,
+            hospital: hospitalActualizado
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado en putHospital'
+        });
+    }
 
 };
 
@@ -73,13 +106,37 @@ const postHospital = async(req, res = response) => {
 // ================================================
 //  DELETE : Eliminar Hospital
 // ================================================
-const deleteHospital = (req, res) => {
+const deleteHospital = async(req, res) => {
 
-    res.json({
-        ok: true,
-        msg: 'deleteHospital'
-    });
+    //Tomamos el id del hospital
+    const hospitalId = req.params.id; //id de hospital
 
+    try {
+
+        //Buscamos al hospital
+        const hospital = await Hospital.findById(hospitalId);
+
+        if (!hospital) {
+            return res.status(400).json({
+                ok: true,
+                msg: 'Hospital no encontrado por ID'
+            });
+        }
+
+        //Eliminamos los datos en la base 
+        await Hospital.findByIdAndDelete(hospitalId);
+
+        res.json({
+            ok: true,
+            msg: 'Hospital Eliminado'
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado en deleteHospital'
+        });
+    }
 };
 
 // ================================================

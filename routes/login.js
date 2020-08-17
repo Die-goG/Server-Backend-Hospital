@@ -3,9 +3,10 @@
 // ================================================
 
 const { Router } = require('express');
-const { login, googleSignIn } = require('../controllers/login');
+const { login, googleSignIn, renewToken } = require('../controllers/login');
 const { validarCampos } = require('../middleware/validar_campos'); // importamos  middleware/validarCampos.js 
 const { check } = require('express-validator');
+const { validarJWT } = require('../middleware/validar_jwt');
 const router = Router();
 
 // ================================================
@@ -30,6 +31,13 @@ router.post('/google', [
     validarCampos,
 
 ], googleSignIn);
+
+// ================================================
+//  GET : Login renew
+//  traemos x-token en el request
+// ================================================
+
+router.get('/renew', validarJWT, renewToken);
 
 // ================================================
 //  EXPORTAMOS

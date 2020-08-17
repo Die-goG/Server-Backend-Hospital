@@ -13,13 +13,18 @@ const router = Router();
 //  GET : Listar medicos
 // ================================================
 
-router.get('/', [], getMedico);
+router.get('/', getMedico);
 
 // ================================================
 //  PUT : Actualizar medicos
 // ================================================
 
-router.put('/:id', [], putMedico);
+router.put('/:id', [
+    validarJWT,
+    check('nombre', 'El nombre del medico es necesario ..').not().isEmpty(),
+    check('hospital', 'El hospital ingresado debe ser valido').isMongoId(), //Verificamos si el hospital es valido
+    validarCampos
+], putMedico);
 
 // ================================================
 //  POST : Crear medicos
@@ -36,7 +41,7 @@ router.post('/', [
 //  DELETE : Elimina medicos
 // ================================================
 
-router.delete('/:id', [], deleteMedico);
+router.delete('/:id', validarJWT, deleteMedico);
 
 // ================================================
 //  EXPORTAMOS

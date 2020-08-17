@@ -13,7 +13,7 @@ const { dbConnection } = require('./database/config'); //asi importamos de forma
 //************************************
 // Conexion con MongoDB Atlas (cloud) 
 //************************************
-dbConnection();
+//dbConnection();
 
 
 //************************************
@@ -74,11 +74,11 @@ app.use('/img', imagenesRoutes);
 //*****************************
 // Conexion con DB localhost
 //*****************************
-// mongoose.connect('mongodb://localhost:27017/Hospital', (err, res) => {
-//     if (err)
-//         throw err;
-//     console.log('Base de datos locahost \x1b[32m%s\x1b[0m', ' Online..');
-// });
+mongoose.connect('mongodb://localhost:27017/Hospital', (err, res) => {
+    if (err)
+        throw err;
+    console.log('Base de datos locahost \x1b[32m%s\x1b[0m', ' Online..');
+});
 
 
 
