@@ -7,7 +7,13 @@ var app = express();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
+//************************************
+// Soluciona el problema de las
+// peticiones http
+//************************************
 const cors = require('cors');
+
+
 const { dbConnection } = require('./database/config'); //asi importamos de forma desestructurada xq luego puedo añadir nuevas cosas
 
 //************************************
@@ -74,10 +80,13 @@ app.use('/img', imagenesRoutes);
 //*****************************
 // Conexion con DB localhost
 //*****************************
+mongoose.set('useFindAndModify', false); // por el warning
 mongoose.connect('mongodb://localhost:27017/Hospital', (err, res) => {
+
     if (err)
         throw err;
     console.log('Base de datos locahost \x1b[32m%s\x1b[0m', ' Online..');
+
 });
 
 

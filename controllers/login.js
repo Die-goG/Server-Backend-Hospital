@@ -1,10 +1,10 @@
 const { response } = require('express');
 const Usuario = require('../models/usuario');
-const { json } = require('body-parser');
+// const { json } = require('body-parser');
 const bcrypt = require('bcryptjs');
 const { generarJWT } = require('../helpers/jwt');
 const { googleVerify } = require('../helpers/google-verify');
-const usuario = require('../models/usuario');
+// const usuario = require('../models/usuario');
 
 // ================================================
 //  POST : Login
@@ -63,7 +63,7 @@ const googleSignIn = async(req, res = response) => {
 
     const googleToken = req.body.token;
 
-    console.log(googleToken);
+    // console.log('Token recibo = ', googleToken); // token que recivo del frontend
 
     try {
 
@@ -71,13 +71,16 @@ const googleSignIn = async(req, res = response) => {
 
         //Verificamos si el usuarios que esta registrado en google ya tiene cuenta en el sistema
         const usuarioDB = await Usuario.findOne({ email });
+
+        console.log('usuarioDB = ', usuarioDB);
+
         let usuario;
 
         if (!usuarioDB) {
             // si no existe el usuario
             usuario = new Usuario({
 
-                nombre: name,
+                usuario: name,
                 email,
                 password: '@@@', //para los usuarios de google no tomamos en cuenta el password
                 img: picture,
@@ -96,7 +99,7 @@ const googleSignIn = async(req, res = response) => {
         await usuario.save();
 
         // Generamos un token jwt
-        const token = await generarJWT(usuario._id);
+        const token = await generarJWT(usuario.id);
 
         res.json({
             ok: true,
@@ -123,9 +126,13 @@ const renewToken = async(req, res = response) => {
     //Generamos el token
     const token = await generarJWT(uid); // el token se genera en base a uid del usuario
 
+    //Obtener el usuario por UID
+    const datosUsuario = await Usuario.findById(uid); // el que enviamos en respuesta al frontend en la funcion validaToken
+
     res.json({
         oK: true,
-        token
+        token,
+        datosUsuario
     });
 };
 
