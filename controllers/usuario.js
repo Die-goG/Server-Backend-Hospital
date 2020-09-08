@@ -25,9 +25,9 @@ const getUsuario = async(req, res) => {
 
     res.json({
         ok: true,
-        usuario,
+        usuario, // listado de usuario que respondemos,se recive en usuario.service.ts
         uid: req.uid, // tomamos el uid del usuario que hizo la peticion, este uid fue envido desde validar_jwt.js (linea:22)
-        total //total de regitros en la base de datos
+        total //total de regitros en la base de datos,se recive en usuario.service.ts
     });
 };
 
@@ -52,8 +52,8 @@ const putUsuario = async(req, res = response) => {
 
         const { password, google, email, ...campos } = req.body;
 
-        //if (usuarioDB.email !== email) {
-        if (usuarioDB.email === email) {
+        if (usuarioDB.email !== email) {
+        // if (usuarioDB.email === email) {
             const existeEmail = await Usuario.findOne({ email });
             if (existeEmail) {
                 return res.status(400).json({

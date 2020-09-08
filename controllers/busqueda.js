@@ -56,6 +56,7 @@ const getColeccion = async(req, res = response) => {
             break;
         case 'hospital':
             data = await Hospital.find({ nombre: regex }).populate('usuario', 'nombre img');
+            //data = await Hospital.find({ nombre: regex }).populate('usuario', 'usuario img _id');
             break;
         case 'usuario':
             data = await Usuario.find({ usuario: regex });

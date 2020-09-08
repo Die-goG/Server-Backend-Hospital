@@ -3,17 +3,17 @@
 // ================================================
 const { Router } = require('express');
 const { check } = require('express-validator'); // importamos el modulo para validad los campos
-const { validarCampos } = require('../middleware/validar_campos'); // importamos  middleware/validarCampos.js 
+const { validarCampos } = require('../middleware/validar_campos'); // importamos  middleware/validarCampos.js
 const { getHospital, putHospital, postHospital, deleteHospital } = require('../controllers/hospital');
 const { validarJWT } = require('../middleware/validar_jwt');
 const router = Router();
 
 
 // ================================================
-//  GET : Listar hospitales
+//  GET : Listar hospital
 // ================================================
 
-router.get('/', getHospital);
+router.get('/',validarJWT,getHospital);
 
 // ================================================
 //  PUT : Actualizar hospital
@@ -25,7 +25,7 @@ router.put('/:id', [
 ], putHospital);
 
 // ================================================
-//  POST : Crear Usuario
+//  POST : Crear hospital
 // ================================================
 
 router.post('/', [

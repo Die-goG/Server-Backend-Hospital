@@ -2,7 +2,7 @@ const { response } = require('express');
 const Medico = require('../models/medico');
 
 // ================================================
-//  GET : Listar Medico
+//  GET : Listar Medicos
 // ================================================
 const getMedico = async(req, res = response) => {
 
@@ -133,6 +133,36 @@ const deleteMedico = async(req, res = response) => {
 };
 
 // ================================================
+//  GET : Listar Medico por Id
+// ================================================
+const getMedicoPorId = async(req, res = response) => {
+
+    // Tomammos el Id del medico que nos envia por la url
+    const id = req.params.id;
+
+    try {
+        // Visualizamos los datos del medico, usuario que lo creo y nombre del hospital al que fue asignado
+        const medico = await Medico.findById(id)
+            .populate('usuario', 'nombre img')
+            .populate('hospital', 'nombre img');
+
+        res.json({
+            ok: true,
+            medico
+        });
+    } catch (error) {
+        console.log(error);
+        res.json({
+            ok: true,
+            msg: 'Error inesperado getMedicoPorId'
+        });
+    }
+
+
+
+};
+
+// ================================================
 //  EXPORTAMOS
 // ================================================
-module.exports = { getMedico, postMedico, putMedico, deleteMedico };
+module.exports = { getMedico, postMedico, putMedico, deleteMedico, getMedicoPorId };
