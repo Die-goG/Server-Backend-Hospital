@@ -1,14 +1,21 @@
 const { response } = require('express');
 const Usuario = require('../models/usuario');
-// const { json } = require('body-parser');
 const bcrypt = require('bcryptjs');
 const { generarJWT } = require('../helpers/jwt');
 const { googleVerify } = require('../helpers/google-verify');
-// const usuario = require('../models/usuario');
+const { getMenuFrontEnd } = require('../helpers/menu-frontend');
+
 
 // ================================================
 //  POST : Login
 // ================================================
+
+
+// ==============================================================================================================
+//  Importante (getMenuFrontEnd): en todas las opcione en donde regresamos un token, tambien regresamos un menu
+//              y en donde sea que grabe el token en el localstorage, tambien grabo el menu  
+// ==============================================================================================================
+
 
 const login = async(req, res = response) => {
 
@@ -39,10 +46,10 @@ const login = async(req, res = response) => {
         // Generamos un token jwt
         const token = await generarJWT(usuarioDB._id);
 
-
         res.json({
             ok: true,
-            token
+            token,
+            menu: getMenuFrontEnd(usuarioDB.role) // regresamos el menu segun el role del usuario
         });
 
     } catch (error) {
@@ -103,7 +110,9 @@ const googleSignIn = async(req, res = response) => {
 
         res.json({
             ok: true,
-            token //visualizamos el token generado por el backend
+            token, //visualizamos el token generado por el backend
+            menu: getMenuFrontEnd(usuario.role) // regresamos el menu segun el role del usuario
+
         });
     } catch (error) {
         res.status(401).json({
@@ -132,7 +141,9 @@ const renewToken = async(req, res = response) => {
     res.json({
         oK: true,
         token,
-        datosUsuario
+        datosUsuario,
+        menu: getMenuFrontEnd(datosUsuario.role) // regresamos el menu segun el role del usuario
+
     });
 };
 
