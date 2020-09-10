@@ -1,4 +1,5 @@
 var express = require('express');
+const path = require('path'); // para lo ultimo
 
 //importamos el archivo con las variables de entornos .env
 require('dotenv').config();
@@ -74,6 +75,10 @@ app.use('/upload', uploadRoutes);
 app.use('/img', imagenesRoutes);
 //app.use('/', appRoutes);
 
+// Lo ultimo =)
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public/index.html')); // la ruta del login
+});
 
 
 
