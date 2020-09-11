@@ -25,6 +25,8 @@ router.get('/:busqueda', validarJWT, getBusqueda);
 
 router.get('/:tabla/:busqueda', validarJWT, getColeccion);
 
+
+
 // ================================================
 //  EXPORTAMOS
 // ================================================
